@@ -7,7 +7,7 @@ namespace ProdutosApp.Endpoints.Categories;
 public class CategoryPut
 {
     //rota
-    public static string Template => "/categories/{id}";
+    public static string Template => "/categories/{id:guid}";
 
     //metodos de acesso que seram acessados pelo Put
     public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
@@ -18,6 +18,10 @@ public class CategoryPut
     public static IResult Action([FromRoute]Guid id,CategoryRequest categoryRequest, ApplicationDbContext context)
     {
         var category = context.Categories.Where(c => c.Id == id).FirstOrDefault();
+        if (category == null)
+        {
+            return Results.NotFound();
+        }
         category.Name = categoryRequest.Name;
         category.Active = categoryRequest.Active;
         context.SaveChanges();
