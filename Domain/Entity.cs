@@ -1,7 +1,10 @@
-﻿namespace ProdutosApp.Domain;
+﻿using Flunt.Notifications;
 
-public abstract class Entity
+namespace ProdutosApp.Domain;
+
+public abstract class Entity :Notifiable<Notification>
 {
+
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string CreatedBy { get; set; }
