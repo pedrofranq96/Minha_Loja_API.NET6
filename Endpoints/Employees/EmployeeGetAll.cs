@@ -1,7 +1,4 @@
-﻿using Dapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
-using System.Security.Claims;
+﻿using ProdutosApp.Infra.Data;
 
 namespace ProdutosApp.Endpoints.Employees;
 
@@ -16,27 +13,12 @@ public class EmployeeGetAll
     //Chama a acao
     public static Delegate Handle => Action;
 
-    public static IResult Action(int? page, int? rows, IConfiguration configuration)
+    public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimName query)
     {
-        var db = new SqlConnection(configuration["ConnectionString:ProdutosApi"]); // Consulta feita via Dapper para melhor performace. Metodo de paginacao no banco de dados no final da query
-        var query =
-            @"select Email, ClaimValue as Name
-              from AspNetUsers u INNER JOIN AspNetUserClaims c
-              on u.id = c.UserId AND claimtype = 'Name'
-              order by name
-              OFFSET (@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
-
-
-        var employees = db.Query<EmployeeResponse>(
-            query,
-            new { page , rows }); //objeto anonimo 
+        
             
 
-        return Results.Ok(employees);
-
-
-
-
+        return Results.Ok(query.Execute(page.Value,rows.Value));
 
 
         //--- Consulta para buscar usuário e email via Entity Framework

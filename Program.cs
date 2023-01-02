@@ -14,9 +14,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => // configura
     options.Password.RequireLowercase = false;
 
 }).AddEntityFrameworkStores<ApplicationDbContext>(); //adicionando o identity como serviço do aspnet
-
+builder.Services.AddScoped<QueryAllUsersWithClaimName>(); //Adicionando a classe como serviço 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
