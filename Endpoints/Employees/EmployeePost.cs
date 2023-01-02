@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ProdutosApp.Domain.Products;
-using ProdutosApp.Infra.Data;
 using System.Security.Claims;
 
 namespace ProdutosApp.Endpoints.Employees;
@@ -24,7 +22,7 @@ public class EmployeePost
 
         if (!result.Succeeded)
         {
-            return Results.BadRequest(result.Errors.First());
+            return Results.ValidationProblem(result.Errors.ConvertProblemDetails());
         }
 
 
@@ -40,7 +38,7 @@ public class EmployeePost
 
         if (!claimResult.Succeeded)
         {
-            return Results.BadRequest(claimResult.Errors.First());
+            return Results.ValidationProblem(result.Errors.ConvertProblemDetails());
         }
 
         
