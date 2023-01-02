@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProdutosApp.Endpoints.Categories;
 using ProdutosApp.Endpoints.Employees;
+using ProdutosApp.Endpoints.Security;
 using ProdutosApp.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,5 +35,6 @@ app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle)
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
+app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 app.Run();
 
