@@ -1,7 +1,4 @@
-﻿using ProdutosApp.Domain.Products;
-using ProdutosApp.Infra.Data;
-
-namespace ProdutosApp.Endpoints.Categories;
+﻿namespace ProdutosApp.Endpoints.Categories;
 
 public class CategoryGetAll
 {

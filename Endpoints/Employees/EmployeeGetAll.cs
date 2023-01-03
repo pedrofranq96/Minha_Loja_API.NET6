@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using ProdutosApp.Infra.Data;
-
-namespace ProdutosApp.Endpoints.Employees;
+﻿namespace ProdutosApp.Endpoints.Employees;
 
 public class EmployeeGetAll
 {

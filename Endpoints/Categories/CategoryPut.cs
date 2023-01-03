@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ProdutosApp.Domain.Products;
-using ProdutosApp.Infra.Data;
-using static System.Net.WebRequestMethods;
-using System.Security.Claims;
-
-namespace ProdutosApp.Endpoints.Categories;
+﻿namespace ProdutosApp.Endpoints.Categories;
 
 public class CategoryPut
 {

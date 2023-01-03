@@ -1,13 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using ProdutosApp.Endpoints.Categories;
-using ProdutosApp.Endpoints.Employees;
-using ProdutosApp.Endpoints.Security;
-using ProdutosApp.Infra.Data;
-using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:ProdutosApi"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => // configuracao de senha para o Identity user

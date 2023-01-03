@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using ProdutosApp.Domain.Products;
-using ProdutosApp.Infra.Data;
-using System.Security.Claims;
-
-namespace ProdutosApp.Endpoints.Categories;
+﻿namespace ProdutosApp.Endpoints.Categories;
 
 public class CategoryPost
 {

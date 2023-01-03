@@ -1,9 +1,4 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using ProdutosApp.Endpoints.Employees;
-
-namespace ProdutosApp.Infra.Data;
-
+﻿namespace ProdutosApp.Infra.Data;
 public class QueryAllUsersWithClaimName
 {
     private readonly IConfiguration configuration;
