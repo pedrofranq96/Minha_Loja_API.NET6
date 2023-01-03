@@ -11,19 +11,23 @@ public class TokenPost
     //Chama a acao
     public static Delegate Handle => Action;
     [AllowAnonymous]
-    public static IResult Action(LoginRequest loginRequest,IConfiguration configuration,UserManager<IdentityUser> userManager) //gerando o token
+    public static async Task<IResult> Action(
+        LoginRequest loginRequest,IConfiguration configuration,UserManager<IdentityUser> userManager,ILogger<TokenPost> log) //gerando o token
     {
-        var user = userManager.FindByEmailAsync(loginRequest.Email).Result;
+        log.LogInformation("Getting token");
+       
+
+        var user = await userManager.FindByEmailAsync(loginRequest.Email);
         if (user == null)
         {
             Results.BadRequest();
         }
-        if (!userManager.CheckPasswordAsync(user, loginRequest.Password).Result)
+        if (!await userManager.CheckPasswordAsync(user, loginRequest.Password))
         {
             Results.BadRequest();
         }
 
-        var claims = userManager.GetClaimsAsync(user).Result;
+        var claims = await userManager.GetClaimsAsync(user);
         var subject = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Email, loginRequest.Email), //criando um claim espeficio de email
