@@ -16,8 +16,8 @@ public class CategoryPost
     //Chama a acao
     public static Delegate Handle => Action;
 
-    [Authorize(Policy ="EmployeePolice")]
-    public static IResult Action(CategoryRequest categoryRequest,HttpContext http, ApplicationDbContext context)
+    [Authorize(Policy ="EmployeePolicy")]
+    public static async Task<IResult> Action(CategoryRequest categoryRequest,HttpContext http, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value; //busca o Id do usuario na claim ao autenticar
         var category = new Category(categoryRequest.Name, userId, userId);
@@ -27,8 +27,8 @@ public class CategoryPost
         {
             return Results.ValidationProblem(category.Notifications.ConvertProblemDetails());
         }
-        context.Categories.Add(category);
-        context.SaveChanges();
+        await context.Categories.AddAsync(category);
+        await context.SaveChangesAsync();
 
         return Results.Created($"/categories/{category.Id}", category.Id);
     }
