@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics;
+using ProdutosApp.Endpoints.Products;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseSerilog((context, configuration) =>{ //configuração para criar o log no banco de dados
+builder.WebHost.UseSerilog((context, configuration) =>
+{ //configuração para criar o log no banco de dados
     configuration
         .WriteTo.Console()
         .WriteTo.MSSqlServer(
@@ -12,8 +14,9 @@ builder.WebHost.UseSerilog((context, configuration) =>{ //configuração para cria
             {
                 AutoCreateSqlTable = true,
                 TableName = "LogAPI"
-             });
+            });
 });
+
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:ProdutosApi"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => // configuracao de senha para o Identity user
 {
@@ -25,7 +28,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => // configura
 
 }).AddEntityFrameworkStores<ApplicationDbContext>(); //adicionando o identity como serviço do aspnet
 
-builder.Services.AddAuthorization(options=>
+builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
       .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
@@ -36,7 +39,7 @@ builder.Services.AddAuthorization(options=>
         p.RequireAuthenticatedUser()
         .RequireClaim("EmployeeCode"));
 
- 
+
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -47,7 +50,7 @@ builder.Services.AddAuthentication(x =>
     options.TokenValidationParameters = new TokenValidationParameters() //Validacoes dos campos do token 
     {
         ValidateActor = true,
-        ValidateAudience = true, 
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ClockSkew = TimeSpan.Zero, //tempo de validacao
@@ -78,12 +81,15 @@ app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
+app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
+app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
 
 app.UseExceptionHandler("/error"); //ao possuir algum erro de conexão, ou erro de banco, é acionado este endpoint
 app.Map("/error", (HttpContext http) =>
 {
     var error = http.Features?.Get<IExceptionHandlerFeature>()?.Error;
-    if (error!= null)
+    if (error != null)
     {
         if (error is SqlException)
         {
