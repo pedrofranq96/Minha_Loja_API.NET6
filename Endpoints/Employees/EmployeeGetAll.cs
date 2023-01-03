@@ -15,9 +15,10 @@ public class EmployeeGetAll
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "EmployeePolicy")]
-    public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimName query)
+    public static async Task<IResult> Action(int? page, int? rows, QueryAllUsersWithClaimName query)
     {
-           return Results.Ok(query.Execute(page.Value,rows.Value));
+        var result = await query.Execute(page.Value, rows.Value);
+           return Results.Ok(result);
         //--- Consulta para buscar usuário e email via Entity Framework
         //var users = userManager.Users.Skip((page - 1) * rows).Take(rows).ToList(); //skip = quantidade de linhas /take = regra para retorno de linhas
         //var employees = new List<EmployeeResponse>();

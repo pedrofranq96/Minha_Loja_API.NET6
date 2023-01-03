@@ -12,7 +12,7 @@ public class QueryAllUsersWithClaimName
         this.configuration = configuration;
     }
 
-    public IEnumerable<EmployeeResponse> Execute(int page, int rows)
+    public async Task<IEnumerable<EmployeeResponse>> Execute(int page, int rows)
     {
         var db = new SqlConnection(configuration["ConnectionString:ProdutosApi"]); // Consulta feita via Dapper para melhor performace. Metodo de paginacao no banco de dados no final da query
         var query =
@@ -23,7 +23,7 @@ public class QueryAllUsersWithClaimName
               OFFSET (@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
 
-        return db.Query<EmployeeResponse>(
+        return await db.QueryAsync<EmployeeResponse>(
             query,
             new { page, rows }); //objeto anonimo 
     }
