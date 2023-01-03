@@ -1,4 +1,5 @@
-﻿using ProdutosApp.Infra.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using ProdutosApp.Infra.Data;
 
 namespace ProdutosApp.Endpoints.Employees;
 
@@ -13,14 +14,10 @@ public class EmployeeGetAll
     //Chama a acao
     public static Delegate Handle => Action;
 
+    
     public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimName query)
     {
-        
-            
-
-        return Results.Ok(query.Execute(page.Value,rows.Value));
-
-
+           return Results.Ok(query.Execute(page.Value,rows.Value));
         //--- Consulta para buscar usuário e email via Entity Framework
         //var users = userManager.Users.Skip((page - 1) * rows).Take(rows).ToList(); //skip = quantidade de linhas /take = regra para retorno de linhas
         //var employees = new List<EmployeeResponse>();
