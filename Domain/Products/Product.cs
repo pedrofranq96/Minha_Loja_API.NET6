@@ -9,17 +9,19 @@ public class Product : Entity
     public string Description { get; private set; }
     public bool HasStock { get; private set; }
     public bool Active { get; private  set; } = true;
+    public decimal Price { get; private set; }
+
 
 
     private Product() { }
 
-    public Product(string name, Category category, string description, bool hasStock, string createdBy)
+    public Product(string name, Category category, string description, bool hasStock,decimal price, string createdBy)
     {
         Name = name;
         Category = category;
         Description = description;
         HasStock = hasStock;
-        
+        Price = price;
 
         CreatedBy = createdBy;
         EditedBy = createdBy;
@@ -36,6 +38,7 @@ public class Product : Entity
             .IsGreaterOrEqualsThan(Name, 3, "Name", "Mínimo de caracteres: 3")
             .IsNotNull(Category, "Category", "Esta categoria não existe")
             .IsNotNullOrEmpty(Description, "Description")
+            .IsLowerOrEqualsThan(Price, 1, "Price")
             .IsNotNull(Description, "Description", "O campo 'Description' é obrigatório")
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
             .IsNotNullOrEmpty(EditedBy, "EditedBy");

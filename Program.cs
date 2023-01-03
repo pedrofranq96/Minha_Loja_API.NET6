@@ -95,6 +95,10 @@ app.Map("/error", (HttpContext http) =>
         {
             return Results.Problem(title: "Database out", statusCode: 500);
         }
+        else if(error is BadHttpRequestException)
+        {
+            return Results.Problem(title: "Erro de tipagem enviada", statusCode: 500);
+        }
     }
     return Results.Problem(title: "An error ocurred", statusCode: 500);
 });

@@ -16,7 +16,7 @@ public class ProductPost
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value; //busca o Id do usuario na claim ao autenticar
         var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == productRequest.CategoryId);
-        var product = new Product(productRequest.Name, category, productRequest.Description, productRequest.HasStock, userId);
+        var product = new Product(productRequest.Name, category, productRequest.Description, productRequest.HasStock,productRequest.Price, userId);
 
 
         if (!product.IsValid)
