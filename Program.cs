@@ -1,6 +1,19 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseSerilog((context, configuration) =>{ //configuração para criar o log no banco de dados
+    configuration
+        .WriteTo.Console()
+        .WriteTo.MSSqlServer(
+        context.Configuration["ConnectionString:ProdutosApi"],
+            sinkOptions: new MSSqlServerSinkOptions()
+            {
+                AutoCreateSqlTable = true,
+                TableName = "LogAPI"
+             });
+});
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:ProdutosApi"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => // configuracao de senha para o Identity user
 {
