@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using ProdutosApp.Domain.Products;
 using ProdutosApp.Infra.Data;
+using System.Security.Claims;
 
 namespace ProdutosApp.Endpoints.Categories;
 
@@ -15,11 +16,11 @@ public class CategoryPost
     //Chama a acao
     public static Delegate Handle => Action;
 
-    [Authorize]
-    public static IResult Action(CategoryRequest categoryRequest, ApplicationDbContext context)
+    [Authorize(Policy ="EmployeePolice")]
+    public static IResult Action(CategoryRequest categoryRequest,HttpContext http, ApplicationDbContext context)
     {
-
-        var category = new Category(categoryRequest.Name, "Test", "Test");
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value; //busca o Id do usuario na claim ao autenticar
+        var category = new Category(categoryRequest.Name, userId, userId);
         
 
         if (!category.IsValid)
