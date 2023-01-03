@@ -25,7 +25,7 @@ builder.Services.AddAuthorization(options=>
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
       .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
       .RequireAuthenticatedUser()
-      .Build();
+      .Build(); //configuração padrão para restringir acesso a usuarios que não contém o token de autenticacao
 });
 builder.Services.AddAuthentication(x =>
 {
