@@ -15,13 +15,13 @@ public class EmployeePost
     //Chama a acao
     public static Delegate Handle => Action;
     [Authorize(Policy = "EmployeePolicy")]
-    public static IResult Action(EmployeeRequest employeeRequest,HttpContext http, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(EmployeeRequest employeeRequest,HttpContext http, UserManager<IdentityUser> userManager)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
         var newUser = new IdentityUser { UserName = employeeRequest.Email, Email = employeeRequest.Email }; //criando o usuario
 
-        var result = userManager.CreateAsync(newUser, employeeRequest.Password).Result;
+        var result = await userManager.CreateAsync(newUser, employeeRequest.Password);
 
         if (!result.Succeeded)
         {
@@ -34,19 +34,13 @@ public class EmployeePost
              new Claim("EmployeeCode", employeeRequest.EmployeeCode),
              new Claim("Name", employeeRequest.Name),
              new Claim("CreatedBy", userId)
-        };
-
+        };        
+        var claimResult = await userManager.AddClaimsAsync(newUser,userClaims); //lista de claims 
         
-        var claimResult = userManager.AddClaimsAsync(newUser,userClaims).Result; //lista de claims 
-        
-
         if (!claimResult.Succeeded)
         {
             return Results.ValidationProblem(result.Errors.ConvertProblemDetails());
-        }
-
-        
-
+        }       
         return Results.Created($"/employees/{newUser.Id}", newUser.Id);
     }
 }
