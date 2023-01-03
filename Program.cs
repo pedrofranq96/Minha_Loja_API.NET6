@@ -26,6 +26,14 @@ builder.Services.AddAuthorization(options=>
       .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
       .RequireAuthenticatedUser()
       .Build(); //configuração padrão para restringir acesso a usuarios que não contém o token de autenticacao
+
+    options.AddPolicy("EmployeePolice", p => //gerando a politica de usuário para dar nivel de permissao
+        p.RequireAuthenticatedUser()
+        .RequireClaim("EmployeeCode"));
+
+    options.AddPolicy("Employee005Police", p => //gerando a politica de usuário para dar nivel de permissao
+       p.RequireAuthenticatedUser()
+       .RequireClaim("EmployeeCode", "005")); //validacao pelo codigo de acesso 
 });
 builder.Services.AddAuthentication(x =>
 {

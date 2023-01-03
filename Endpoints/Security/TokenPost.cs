@@ -30,14 +30,22 @@ public class TokenPost
             Results.BadRequest();
         }
 
+        var claims = userManager.GetClaimsAsync(user).Result;
+        var subject = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Email, loginRequest.Email), //criando um claim espeficio de email
+                new Claim(ClaimTypes.NameIdentifier, user.Id), //buscando o code do usuário (claim value)
+             
+            });
+        subject.AddClaims(claims); //adicionando o claim a lista de usuarios
+
+
+
         var key = Encoding.ASCII.GetBytes(configuration["JwtBearerTokenSettings:SecretKey"]);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Email, loginRequest.Email),
-            }),
+            Subject = subject,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuration["JwtBearerTokenSettings:Audience"],
             Issuer = configuration["JwtBearerTokenSettings:Issuer"]
