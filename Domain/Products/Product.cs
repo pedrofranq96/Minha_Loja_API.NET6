@@ -38,7 +38,7 @@ public class Product : Entity
             .IsGreaterOrEqualsThan(Name, 3, "Name", "Mínimo de caracteres: 3")
             .IsNotNull(Category, "Category", "Esta categoria não existe")
             .IsNotNullOrEmpty(Description, "Description")
-            .IsLowerOrEqualsThan(Price, 1, "Price")
+            .IsGreaterOrEqualsThan(Price, 1, "Price")
             .IsNotNull(Description, "Description", "O campo 'Description' é obrigatório")
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
             .IsNotNullOrEmpty(EditedBy, "EditedBy");

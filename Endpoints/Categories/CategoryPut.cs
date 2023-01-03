@@ -11,7 +11,7 @@ public class CategoryPut
     //Chama a acao
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolice")]
+    [Authorize(Policy = "EmployeePolicy")]
     public static IResult Action([FromRoute]Guid id,CategoryRequest categoryRequest,HttpContext http, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
