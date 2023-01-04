@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
+using ProdutosApp.Domain.Users;
+using ProdutosApp.Endpoints.Clients;
 using ProdutosApp.Endpoints.Products;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
@@ -60,6 +62,8 @@ builder.Services.AddAuthentication(x =>
     };
 });
 builder.Services.AddScoped<QueryAllUsersWithClaimName>(); //Adicionando a classe como serviço 
+builder.Services.AddScoped<UserCreator>(); //Adicionando a classe como serviço 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -78,6 +82,7 @@ app.UseHttpsRedirection();
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
+app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
