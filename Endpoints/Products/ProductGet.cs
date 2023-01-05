@@ -7,7 +7,7 @@ public class ProductGet
     //rota
     public static string Template => "/products/{id}";
 
-    //metodos de acesso que seram acessados pelo POST
+    //metodos de acesso que seram acessados pelo Get
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
 
     //Chama a acao
