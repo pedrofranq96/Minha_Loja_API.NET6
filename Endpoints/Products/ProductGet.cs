@@ -17,10 +17,18 @@ public class ProductGet
     public static async Task<IResult> Action([FromRoute] Guid id,ApplicationDbContext context)
     {
         var product = await context.Products.Include(p => p.Category).Where(p => p.Id == id).FirstAsync();
-
-        if (product != null)
+        var result = new
         {
-            return Results.Ok(product);
+            Name = product.Name,
+            Category = product.Category.Name,
+            Active = product.Active,
+            Price = product.Price,
+            HasStock = product.HasStock
+        };
+
+        if (result != null)
+        {
+            return Results.Ok(result);
         }
         return Results.NotFound();
     }
