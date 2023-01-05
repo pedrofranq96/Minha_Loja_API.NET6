@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using ProdutosApp.Domain.Users;
 using ProdutosApp.Endpoints.Clients;
+using ProdutosApp.Endpoints.Orders;
 using ProdutosApp.Endpoints.Products;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
@@ -40,6 +41,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("EmployeePolicy", p => //gerando a politica de usuário para dar nivel de permissao
         p.RequireAuthenticatedUser()
         .RequireClaim("EmployeeCode"));
+
+    options.AddPolicy("CPFPolicy", p => //gerando a politica de usuário para dar nivel de permissao
+        p.RequireAuthenticatedUser()
+        .RequireClaim("CPF"));
 
 
 });
@@ -82,6 +87,7 @@ app.UseHttpsRedirection();
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
+app.MapMethods(OrderPost.Template, OrderPost.Methods, OrderPost.Handle);
 app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);

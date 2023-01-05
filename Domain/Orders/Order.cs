@@ -1,18 +1,15 @@
 ﻿namespace ProdutosApp.Domain.Orders;
 
-public class Order :Entity
+public class Order : Entity
 {
-    public string ClientId { get;private set; }
+    public string ClientId { get; private set; }
     public List<Product> Products { get; private set; }
     public decimal Total { get; private set; }
     public string DeliveryAddress { get; private set; }
 
-    private Order()
-    {
+    private Order() { }
 
-    }
-
-    public Order(string clientId,string clientName, List<Product> products, string deliveryAddress)
+    public Order(string clientId, string clientName, List<Product> products, string deliveryAddress)
     {
         ClientId = clientId;
         Products = products;
@@ -34,9 +31,9 @@ public class Order :Entity
     private void Validate()
     {
         var contract = new Contract<Order>()
-            .IsNotNull(ClientId, "Client", "O campo 'clientId' é obrigatório")
-            .IsNotNull(Products, "Products", "O campo 'products' é obrigatório");
-            
+            .IsNotNull(ClientId, "Client")
+            .IsTrue(Products != null && Products.Any(), "Products")
+            .IsNotNullOrEmpty(DeliveryAddress, "DeliveryAddress");
         AddNotifications(contract);
     }
 }

@@ -1,21 +1,21 @@
-﻿namespace ProdutosApp.Domain.Products;
+﻿using ProdutosApp.Domain.Orders;
+
+namespace ProdutosApp.Domain.Products;
 
 public class Product : Entity
 {
-    
     public string Name { get; private set; }
     public Guid CategoryId { get; private set; }
     public Category Category { get; private set; }
     public string Description { get; private set; }
     public bool HasStock { get; private set; }
-    public bool Active { get; private  set; } = true;
+    public bool Active { get; private set; } = true;
     public decimal Price { get; private set; }
-
-
+    public ICollection<Order> Orders { get; private set; }
 
     private Product() { }
 
-    public Product(string name, Category category, string description, bool hasStock,decimal price, string createdBy)
+    public Product(string name, Category category, string description, bool hasStock, decimal price, string createdBy)
     {
         Name = name;
         Category = category;
@@ -30,16 +30,15 @@ public class Product : Entity
 
         Validate();
     }
-
     private void Validate()
     {
         var contract = new Contract<Product>()
             .IsNotNullOrEmpty(Name, "Name")
-            .IsGreaterOrEqualsThan(Name, 3, "Name", "Mínimo de caracteres: 3")
-            .IsNotNull(Category, "Category", "Esta categoria não existe")
+            .IsGreaterOrEqualsThan(Name, 3, "Name")
+            .IsNotNull(Category, "Category", "Category not found")
             .IsNotNullOrEmpty(Description, "Description")
+            .IsGreaterOrEqualsThan(Description, 3, "Description")
             .IsGreaterOrEqualsThan(Price, 1, "Price")
-            .IsNotNull(Description, "Description", "O campo 'Description' é obrigatório")
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
             .IsNotNullOrEmpty(EditedBy, "EditedBy");
         AddNotifications(contract);
