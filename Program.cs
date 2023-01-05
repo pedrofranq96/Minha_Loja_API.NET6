@@ -66,6 +66,7 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerTokenSettings:SecretKey"]))
     };
 });
+builder.Services.AddScoped<QueryAllProductsSold>();
 builder.Services.AddScoped<QueryAllUsersWithClaimName>(); //Adicionando a classe como serviço 
 builder.Services.AddScoped<UserCreator>(); //Adicionando a classe como serviço 
 
@@ -98,6 +99,7 @@ app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
 app.MapMethods(ProductGetShowcase.Template, ProductGetShowcase.Methods, ProductGetShowcase.Handle);
+app.MapMethods(ProductSoldGet.Template, ProductSoldGet.Methods, ProductSoldGet.Handle);
 
 app.UseExceptionHandler("/error"); //ao possuir algum erro de conexão, ou erro de banco, é acionado este endpoint
 app.Map("/error", (HttpContext http) =>
@@ -107,14 +109,14 @@ app.Map("/error", (HttpContext http) =>
     {
         if (error is SqlException)
         {
-            return Results.Problem(title: "Database out", statusCode: 500);
+            return Results.Problem(title: "Banco de dados fora do ar.", statusCode: 500);
         }
         else if(error is BadHttpRequestException)
         {
             return Results.Problem(title: "Erro de tipagem enviada", statusCode: 500);
         }
     }
-    return Results.Problem(title: "An error ocurred", statusCode: 500);
+    return Results.Problem(title: "Aconteceu algo inesperado.", statusCode: 500);
 });
 
 app.Run();
